@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart_model.dart';
+import 'checkout_page.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -10,63 +11,56 @@ class CartPage extends StatelessWidget {
     final cart = context.watch<CartModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Cart"),
-        actions: [
-          if (cart.itemCount > 0)
-            IconButton(
-              icon: const Icon(Icons.delete_sweep),
-              onPressed: () {
-                cart.clear();
-              },
-            ),
-        ],
-      ),
-      body: cart.itemCount == 0
-          ? const Center(child: Text("Cart kosong"))
+      appBar: AppBar(title: const Text('Keranjang')),
+      body: cart.isEmpty
+          ? const Center(child: Text('Keranjang kosong'))
           : Column(
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: cart.items.length,
-                    itemBuilder: (_, i) {
-                      final item = cart.items[i];
-                      final product = item.product;
-
-                      return ListTile(
-                        leading: Image.network(
-                          product.imageUrl,
-                          width: 60,
-                          fit: BoxFit.cover,
+                    itemCount: cart.itemsList.length,
+                    itemBuilder: (_, index) {
+                      final cartItem = cart.itemsList[index];
+                      final product = cartItem.product;
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
                         ),
-                        title: Text(product.name),
-                        subtitle: Text(
-                          "Rp ${product.price.toStringAsFixed(0)}",
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: () {
-                                cart.decreaseQuantity(product.id);
-                              },
-                            ),
-                            Text(item.quantity.toString()),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () {
-                                cart.increaseQuantity(product.id);
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                cart.removeItem(product.id);
-                              },
-                            ),
-                          ],
+                        child: ListTile(
+                          leading: Image.network(
+                            product.imageUrl,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          title: Text(product.name),
+                          subtitle: Text(
+                            'Rp ${product.price.toStringAsFixed(0)}',
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle_outline),
+                                onPressed: () =>
+                                    cart.decreaseQuantity(product.id),
+                              ),
+                              Text('${cartItem.quantity}'),
+                              IconButton(
+                                icon: const Icon(Icons.add_circle_outline),
+                                onPressed: () =>
+                                    cart.increaseQuantity(product.id),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () => cart.removeItem(product.id),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -78,18 +72,19 @@ class CartPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Total: Rp ${cart.totalPrice.toStringAsFixed(0)}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        'Total: Rp ${cart.totalPrice.toStringAsFixed(0)}',
+                        style: const TextStyle(fontSize: 20),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          cart.clear();
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const CheckoutPage(),
+                            ),
+                          );
                         },
-                        child: const Text("Checkout"),
+                        child: const Text('Checkout'),
                       ),
                     ],
                   ),

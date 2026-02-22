@@ -1,29 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'cart_item.dart';
 import 'product.dart';
 
 class CartModel extends ChangeNotifier {
   final Map<String, CartItem> _items = {};
 
-  List<CartItem> get items => _items.values.toList();
-
+  Map<String, CartItem> get items => _items;
+  List<CartItem> get itemsList => _items.values.toList();
   int get itemCount => _items.length;
-
-  int get totalQuantity {
-    int total = 0;
-    for (var item in _items.values) {
-      total += item.quantity;
-    }
-    return total;
-  }
-
-  double get totalPrice {
-    double total = 0;
-    for (var item in _items.values) {
-      total += item.totalPrice;
-    }
-    return total;
-  }
+  int get totalQuantity =>
+      _items.values.fold(0, (sum, item) => sum + item.quantity);
+  double get totalPrice =>
+      _items.values.fold(0.0, (sum, item) => sum + item.totalPrice);
+  bool get isEmpty => _items.isEmpty;
 
   void addItem(Product product) {
     if (_items.containsKey(product.id)) {
@@ -34,27 +23,26 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(String id) {
-    _items.remove(id);
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 
-  void increaseQuantity(String id) {
-    if (_items.containsKey(id)) {
-      _items[id]!.quantity++;
+  void increaseQuantity(String productId) {
+    if (_items.containsKey(productId)) {
+      _items[productId]!.quantity++;
       notifyListeners();
     }
   }
 
-  void decreaseQuantity(String id) {
-    if (!_items.containsKey(id)) return;
+  void decreaseQuantity(String productId) {
+    if (!_items.containsKey(productId)) return;
 
-    if (_items[id]!.quantity > 1) {
-      _items[id]!.quantity--;
+    if (_items[productId]!.quantity > 1) {
+      _items[productId]!.quantity--;
     } else {
-      _items.remove(id);
+      _items.remove(productId);
     }
-
     notifyListeners();
   }
 
