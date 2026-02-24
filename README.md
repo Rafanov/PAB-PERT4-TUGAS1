@@ -189,6 +189,23 @@ Project ini dibuat untuk mempelajari:
 
 ---
 
+# Foto Aplikasi
+
+## Layar Utama
+<img width="615" height="885" alt="localhost_15293_" src="https://github.com/user-attachments/assets/41fcc769-a858-4689-96f5-96735cff5f84" />
+
+<img width="615" height="885" alt="localhost_15293_ (3)" src="https://github.com/user-attachments/assets/76c84ddb-13b7-43b5-b425-95131b1abb66" />
+
+## Layar Kerjanjang
+
+<img width="615" height="885" alt="localhost_15293_ (1)" src="https://github.com/user-attachments/assets/16f5b174-a4e7-402f-86ac-33deaa827792" />
+
+## Layar Checkout
+
+<img width="615" height="885" alt="localhost_15293_ (2)" src="https://github.com/user-attachments/assets/638ed9bb-c8dc-47e1-8d30-522d0ce787a7" />
+
+---
+
 # Author
 
 Raihan Fariz N  
